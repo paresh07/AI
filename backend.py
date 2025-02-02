@@ -36,8 +36,25 @@ def chat_endpoint(request:ReuestState):
     return response
     #step3: run app & explore swagger ui after 9999/docs to open swager
 if __name__=="__main__":
-    import uvicorn
-    uvicorn.run(app,host="127.0.0.1",port=9999)
+    import subprocess
+    import threading
+
+    def run_fastapi():
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=9999)
+
+    def run_streamlit():
+        command = ['C:\\Users\\parma\\AppData\\Roaming\\Python\\Python313\\Scripts\\streamlit', 'run', 'frontend.py']
+        result = subprocess.run(command, capture_output=True, text=True)
+        print(result.stdout)
+        print(result.stderr)
+
+    # Start FastAPI in a separate thread
+    fastapi_thread = threading.Thread(target=run_fastapi)
+    fastapi_thread.start()
+
+    # Start Streamlit
+    run_streamlit()
 
 
 
